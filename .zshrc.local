@@ -1,0 +1,23 @@
+ZSH_THEME="powerlevel9k/powerlevel9k"
+export TERM="xterm-256color"
+
+alias vim=nvim
+
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.oh-my-zsh/custom/themes/rjorgenson.zsh-theme
+source ~/Projects/Python3/bin/activate
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# export ZPLUG_HOME=/usr/local/opt/zplug
+# source $ZPLUG_HOME/init.zsh
+
+# zplug "changyuheng/zsh-interactive-cd"
+# zplug "changyuheng/fz", defer:1
+# zplug "rupa/z", use:z.sh
