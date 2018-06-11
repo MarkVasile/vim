@@ -8,3 +8,4 @@ Edit ~/.zshrc and add at the end:
 
   source ~/.zshrc.local
   
+  test 4
