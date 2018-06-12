@@ -1,0 +1,90 @@
+#=============================================================================
+# dark_powered.toml --- dark powered configuration example for SpaceVim
+# Copyright (c) 2016-2017 Wang Shidong & Contributors
+# Author: Wang Shidong < wsdjeg at 163.com >
+# URL: https://spacevim.org
+# License: GPLv3
+#=============================================================================
+
+# All SpaceVim option below [option] section
+[options]
+    # set spacevim theme. by default colorscheme layer is not loaded,
+    # if you want to use more colorscheme, please load the colorscheme
+    # layer
+# colorscheme = "gruvbox"
+    colorscheme = "neodark"
+    background = "dark"
+    # Disable statusline separator, if you want to use other value, please
+    # install nerd fonts
+    statusline_separator = "arrow"
+    statusline_inactive_separator = "arrow"
+    realtime_leader_guide = 1
+    buffer_index_type = 4
+    default_indent = 2
+    relativenumber = 0
+
+    enable_tabline_filetype_icon = true
+    enable_statusline_display_mode = false
+    enable_os_fileformat_icon = 1
+    enable_vimfiler_welcome = 1
+    enable_debug = 0
+    enable_ale = 1
+
+    enable_cursorline = 0
+# plugin_groups = ["web", "lang", "edit", "ui", "tools", "checkers", "format", "git", "VersionControl", "javascript", "lang#markdown", "scm", "editing", "indents", "navigation", "misc", "core", "core#statusline", "core#tabline", "default", "unite", "github", "denite", "autocomplete", "nvim", "osx", "incsearch", "lang#c", "lang#haskell", "lang#javascript", "lang#typescript", "lang#lua", "lang#vim", "lang#xml", "shell", "colorscheme", "core#banner"]
+    disabled_plugins = ["ctrlp", "unite", "unite-gtags", "unite-radio", "nerdtree", "htmlcomplete", "vim-youdao-translater"]
+
+    bootstrap_after  = "myspacevim#before"
+
+# Enable autocomplete layer
+[[layers]]
+name = "autocomplete"
+auto-completion-return-key-behavior = "complete"
+auto-completion-tab-key-behavior = "smart"
+
+[[layers]]
+name = "shell"
+default_position = "top"
+default_height = 30
+
+[[layers]]
+name = "fzf"
+
+[[layers]]
+name = "japanese"
+
+[[layers]]
+name = "lang#javascript"
+
+[[layers]]
+name = "lang#typescript"
+
+[[layers]]
+name = "lang#html"
+
+[[layers]]
+name = "lang#python"
+
+[[layers]]
+name = "git"
+
+[[layers]]
+name = "github"
+
+[[custom_plugins]]
+name = "junegunn/fzf.vim"
+
+[[custom_plugins]]
+name = "Quramy/tsuquyomi"
+
+[[custom_plugins]]
+name = "/usr/local/opt/fzf"
+
+[[custom_plugins]]
+name = "posva/vim-vue"
+
+[[custom_plugins]]
+name = "KeitaNakamura/neodark.vim"
+
+[[custom_plugins]]
+name = "digitaltoad/vim-pug"
