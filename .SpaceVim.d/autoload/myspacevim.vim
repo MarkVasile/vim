@@ -5,6 +5,7 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set history=1000
+set listchars+=eol:$
 
 let g:clang2_placeholder_next = ''
 let g:clang2_placeholder_prev = ''
