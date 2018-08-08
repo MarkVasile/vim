@@ -11,41 +11,52 @@
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-# colorscheme = "gruvbox"
-    colorscheme = "neodark"
+    colorscheme = "gruvbox"
     background = "dark"
+    # Disable guicolors in basic mode, many terminal do not support 24bit
+    # true colors
+    enable_guicolors = true
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     statusline_separator = "arrow"
     statusline_inactive_separator = "arrow"
-    realtime_leader_guide = 1
     buffer_index_type = 4
+    enable_tabline_filetype_icon = true
+    enable_statusline_display_mode = false
     default_indent = 2
     relativenumber = 0
+    sidebar_width = 50
 
     enable_tabline_filetype_icon = true
     enable_statusline_display_mode = false
     enable_os_fileformat_icon = 1
     enable_vimfiler_welcome = 1
     enable_debug = 0
+    enable_neomake = false
     enable_ale = 1
+    lint_on_the_fly = true
 
     enable_cursorline = 0
-# plugin_groups = ["web", "lang", "edit", "ui", "tools", "checkers", "format", "git", "VersionControl", "javascript", "lang#markdown", "scm", "editing", "indents", "navigation", "misc", "core", "core#statusline", "core#tabline", "default", "unite", "github", "denite", "autocomplete", "nvim", "osx", "incsearch", "lang#c", "lang#haskell", "lang#javascript", "lang#typescript", "lang#lua", "lang#vim", "lang#xml", "shell", "colorscheme", "core#banner"]
-    disabled_plugins = ["ctrlp", "unite", "unite-gtags", "unite-radio", "nerdtree", "htmlcomplete", "vim-youdao-translater"]
+    disabled_plugins = ["ctrlp", "unite", "unite-gtags", "unite-radio", "nerdtree", "htmlcomplete", "vim-youdao-translater", "neco-look", "nvim-typescript"]
 
     bootstrap_after  = "myspacevim#before"
 
 # Enable autocomplete layer
 [[layers]]
-name = "autocomplete"
+name = 'autocomplete'
 auto-completion-return-key-behavior = "complete"
 auto-completion-tab-key-behavior = "smart"
 
 [[layers]]
-name = "shell"
-default_position = "top"
+name = 'checkers'
+
+[[layers]]
+name = 'shell'
+default_position = 'top'
 default_height = 30
+
+[[layers]]
+name = "lang#python"
 
 [[layers]]
 name = "fzf"
@@ -61,9 +72,6 @@ name = "lang#typescript"
 
 [[layers]]
 name = "lang#html"
-
-[[layers]]
-name = "lang#python"
 
 [[layers]]
 name = "git"
@@ -88,3 +96,17 @@ name = "KeitaNakamura/neodark.vim"
 
 [[custom_plugins]]
 name = "digitaltoad/vim-pug"
+
+[[custom_plugins]]
+name = "tpope/vim-fugitive"
+
+[[custom_plugins]]
+name = "sourcegraph/javascript-typescript-langserver"
+
+[[custom_plugins]]
+name = "palantir/python-language-server"
+
+[[custom_plugins]]
+name = "autozimu/LanguageClient-neovim"
+
+
