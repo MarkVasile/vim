@@ -56,7 +56,6 @@ This function should only modify configuration layer settings."
      spell-checking syntax-checking latex octave
 
      (ranger :variables ranger-show-preview t)
-     slack
      xkcd emoji
      )
 
@@ -487,17 +486,6 @@ before packages are loaded."
    typescript-indent-level 2
    tide-format-options '(:indentSize 2 :tabSize 2)
    tide-tsserver-executable "/usr/local/bin/tsserver")
-
-  (setq slack-buffer-emojify t)
-  (setq slack-prefer-current-team t)
-  (slack-register-team
-   :name "xica"
-   :default t
-   :client-id "2336288987.500453641284"
-   :client-secret "70ba9afcaf9fab2d2e216cca1e3e8c0c"
-   :token "xoxp-2336288987-377394694353-502031394662-eb81f9402d2f3a8bd08596bc262b384c"
-   :subscribed-channels '(prod_engineers magellan_dev)
-   :full-and-display-names t)
 
   ;; GHC development
   (dir-locals-set-class-variables
