@@ -51,9 +51,9 @@ This function should only modify configuration layer settings."
      git github version-control
      themes-megapack
 
-     multiple-cursors
+     ;; multiple-cursors
      neotree
-     spell-checking syntax-checking latex octave
+     spell-checking syntax-checking
 
      (ranger :variables ranger-show-preview t)
      xkcd emoji
@@ -77,7 +77,6 @@ This function should only modify configuration layer settings."
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
-                                    hl-todo ;https://github.com/tarsius/hl-todo/issues/14
                                     rbenv
                                     rvm
                                     coffee-mode
@@ -228,7 +227,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 11
                                :weight normal
                                :width normal)
 
@@ -370,11 +369,11 @@ It should only modify the values of Spacemacs settings."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
@@ -457,6 +456,12 @@ variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env))
 
+(defvar prelude-dir (file-name-directory load-file-name)
+  "The root dir of the Emacs Prelude distribution.")
+
+(defvar prelude-savefile-dir (expand-file-name "savefile" prelude-dir)
+  "This folder stores all the automatically generated save/history-files.")
+
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
@@ -480,39 +485,61 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  (when (string= system-type "darwin") (setq dired-use-ls-dired nil))
+
+  ;; store all backup and autosave files in the tmp dir
+  (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+  ;; autosave the undo-tree history
+  (setq undo-tree-history-directory-alist `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t)
+
   (setq make-backup-files nil)
-  (global-flycheck-mode 1)
+
+  ;; C-h k will help you here. C-h k C-n will show you which function is being called and then you can read up sn it.
+  (setq evil-complete-next-func 'hippie-expand)
+
+  ;; saveplace remembers your location in a file when saving files
+  (setq save-place-file (expand-file-name "saveplace" prelude-savefile-dir))
+  ;; activate it for all buffers
+  (save-place-mode 1)
+
+  ;; savehist keeps track of some history
+  (require 'savehist)
+  (setq savehist-additional-variables
+        ;; search entries
+        '(search-ring regexp-search-ring)
+        ;; save every minute
+        savehist-autosave-interval 60
+        ;; keep the home clean
+        savehist-file (expand-file-name "savehist" prelude-savefile-dir))
+  (savehist-mode +1)
+
+  ;; use settings from .editorconfig file when present
+  (require 'editorconfig)
+  (editorconfig-mode 1)
+
+  (setq projectile-cache-file (expand-file-name  "projectile.cache" prelude-savefile-dir))
+  (projectile-mode t)
+
+  ;; (global-flycheck-mode 1)
+
+  ;; hippie expand is dabbrev expand on steroids
+  (setq hippie-expand-try-functions-list '(try-expand-dabbrev
+                                           try-expand-dabbrev-all-buffers
+                                           try-expand-dabbrev-from-kill
+                                           try-complete-file-name-partially
+                                           try-complete-file-name
+                                           try-expand-all-abbrevs
+                                           try-expand-list
+                                           try-expand-line
+                                           try-complete-lisp-symbol-partially
+                                           try-complete-lisp-symbol))
 
   (setq
    typescript-indent-level 2
    tide-format-options '(:indentSize 2 :tabSize 2)
    tide-tsserver-executable "/usr/local/bin/tsserver")
-
-  ;; GHC development
-  (dir-locals-set-class-variables
-   
-   '((haskell-mode . ((flycheck-disabled-checkers . (haskell-ghc))
-                      (haskell-tags-on-save . nil)))
-     )
-   )
-
-  (setq-default
-   auto-mode-alist
-   (append '(("Parser\\.y\\'" . fundamental-mode)
-             ("\\.T\\'" . python-mode)
-             ("\\.dump-prep\\'" . ghc-core-mode)
-             ("\\.dump-spec\\'" . ghc-core-mode)
-             ("\\.dump-ds\\'" . ghc-core-mode)
-             ("\\.verbose-core2core.split\\'" . ghc-core-mode)
-             ("\\.verbose-core2core.split/.+\\'" . ghc-core-mode)
-             )
-           auto-mode-alist))
-
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (cond ((string-match "DynFlags\\.hs" (buffer-file-name)) . (flycheck-mode 0)))
-              (cond ((string-match "Parser\\.y" (buffer-file-name)) . (fundamental-mode)))
-              ))
 
   ;; VUE TYPESCRIPT JAVASCRIPT HTML CSS
   (setq-default indent-tabs-mode nil)
@@ -534,7 +561,7 @@ before packages are loaded."
   ;; use local eslint from node_modules before global
   ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
   (defun shiren/use-eslint-from-node-modules ()
-    "Use eslint from node modules."
+    ;; Use eslint from node modules.
     (let* ((root (locate-dominating-file
                   (or (buffer-file-name) default-directory)
                   "node_modules"))
@@ -545,8 +572,6 @@ before packages are loaded."
         (setq-local flycheck-javascript-eslint-executable eslint))
       eslint))
 
-  ;;(eval-after-load 'vue-mode
-    ;; '(add-hook 'vue-mode-hook #'add-node-modules-path))
   (add-hook 'flycheck-mode-hook #'shiren/use-eslint-from-node-modules)
 
   ;;; typescript
@@ -562,6 +587,29 @@ before packages are loaded."
 
   (add-hook 'flycheck-mode-hook #'my/use-tslint-from-node-modules)
 
+  (add-to-list 'auto-mode-alist '("¥¥.js¥¥'"    . js2-mode))
+  (add-to-list 'auto-mode-alist '("¥¥.pac¥¥'"   . js2-mode))
+  (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
+  ;; show the name of the current function definition in the modeline
+  (require 'which-func)
+  (which-function-mode 1)
+
+  ;; font-lock annotations like TODO in source code
+  (require 'hl-todo)
+  (global-hl-todo-mode 1)
+
+  (with-eval-after-load 'js2-mode
+    (defun prelude-js-mode-defaults ()
+      ;; electric-layout-mode doesn't play nice with smartparens
+      (setq-local electric-layout-rules '((?\; . after)))
+      (setq mode-name "JS2")
+      (js2-imenu-extras-mode +1))
+
+    (setq prelude-js-mode-hook 'prelude-js-mode-defaults)
+
+    (add-hook 'js2-mode-hook (lambda () (run-hooks 'prelude-js-mode-hook))))
+
   (defun setup-tide-mode ()
     (interactive)
     (tide-setup)
@@ -571,7 +619,12 @@ before packages are loaded."
     (tide-hl-identifier-mode +1))
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
-  (cancel-timer recentf-auto-save-timer)
+  (defun nullify-recentf-save-list (orig-fun &rest args) t)
+  (advice-add 'recentf-save-list :around #'nullify-recentf-save-list)
+
+  ;; use shift + arrow keys to switch between visible buffers
+  (require 'windmove)
+  (windmove-default-keybindings +1)
 
   )
 
@@ -589,7 +642,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (auctex-latexmk zenburn-theme zen-and-art-theme yapfify yaml-mode xkcd ws-butler writeroom-mode winum white-sand-theme which-key web-mode web-beautify vue-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tide tern tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme ranger rainbow-delimiters railscasts-theme pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme prettier-js popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox organic-green-theme org-plus-contrib org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-toc majapahit-theme magithub magit-svn magit-gitflow magit-gh-pulls madhat2r-theme lush-theme livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic impatient-mode hungry-delete hlint-refactor hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme groovy-mode grandshell-theme gotham-theme google-translate google-c-style golden-ratio gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme font-lock+ flyspell-correct-helm flycheck-rtags flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme emojify emoji-cheat-sheet-plus emmet-mode editorconfig dumb-jump dts-mode dracula-theme dotenv-mode doom-themes doom-modeline django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-highlight-symbol auto-dictionary auctex apropospriate-theme anti-zenburn-theme anaconda-mode ample-zen-theme ample-theme alect-themes ag afternoon-theme ace-window ace-link ace-jump-helm-line))))
+    (origami hl-todo zenburn-theme zen-and-art-theme yapfify yaml-mode xkcd ws-butler writeroom-mode winum white-sand-theme which-key web-mode web-beautify vue-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tide tern tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme ranger rainbow-delimiters railscasts-theme pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme prettier-js popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox organic-green-theme org-plus-contrib org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-toc majapahit-theme magithub magit-svn magit-gitflow magit-gh-pulls madhat2r-theme lush-theme livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic impatient-mode hungry-delete hlint-refactor hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme groovy-mode grandshell-theme gotham-theme google-translate google-c-style golden-ratio gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme font-lock+ flyspell-correct-helm flycheck-rtags flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme emojify emoji-cheat-sheet-plus emmet-mode editorconfig dumb-jump dts-mode dracula-theme dotenv-mode doom-themes doom-modeline django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-highlight-symbol auto-dictionary apropospriate-theme anti-zenburn-theme anaconda-mode ample-zen-theme ample-theme alect-themes ag afternoon-theme ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
