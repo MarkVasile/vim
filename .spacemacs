@@ -102,6 +102,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
                                     rbenv
+                                    treemacs
                                     rvm
                                     coffee-mode
                                     lorem-ipsum
@@ -261,7 +262,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Fira Code"
                                :size 12
                                :weight normal
                                :width normal)
@@ -533,20 +534,20 @@ before packages are loaded."
   ;; (setq evil-complete-next-func 'hippie-expand)
 
   ;; saveplace remembers your location in a file when saving files
-  (setq save-place-file (expand-file-name "saveplace" prelude-savefile-dir))
+  ;; (setq save-place-file (expand-file-name "saveplace" prelude-savefile-dir))
   ;; activate it for all buffers
-  (save-place-mode 1)
+  ;; (save-place-mode 1)
 
   ;; savehist keeps track of some history
-  ;; (require 'savehist)
-  ;; (setq savehist-additional-variables
-  ;;       ;; search entries
-  ;;       '(search-ring regexp-search-ring)
-  ;;       ;; save every minute
-  ;;       savehist-autosave-interval 60
-  ;;       ;; keep the home clean
-  ;;       savehist-file (expand-file-name "savehist" prelude-savefile-dir))
-  ;; (savehist-mode +1)
+  (require 'savehist)
+  (setq savehist-additional-variables
+        ;; search entries
+        '(search-ring regexp-search-ring)
+        ;; save every minute
+        savehist-autosave-interval 60
+        ;; keep the home clean
+        savehist-file (expand-file-name "savehist" prelude-savefile-dir))
+  (savehist-mode +1)
 
   ;; use settings from .editorconfig file when present
   (require 'editorconfig)
@@ -624,22 +625,18 @@ before packages are loaded."
   (add-to-list 'auto-mode-alist '("¥¥.js¥¥'"    . js2-mode))
   (add-to-list 'auto-mode-alist '("¥¥.pac¥¥'"   . js2-mode))
 
-  ;; show the name of the current function definition in the modeline
-  (require 'which-func)
-  (which-function-mode 1)
-
   ;; font-lock annotations like TODO in source code
   (require 'hl-todo)
   (global-hl-todo-mode 1)
 
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    ;; (flycheck-mode +1)
-    ;; (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1))
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+  ;; (defun setup-tide-mode ()
+  ;;   (interactive)
+  ;;   (tide-setup)
+  ;;   ;; (flycheck-mode +1)
+  ;;   ;; (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  ;;   (eldoc-mode +1)
+  ;;   (tide-hl-identifier-mode +1))
+  ;; (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
   (setq js2-strict-missing-semi-warning nil)
 
