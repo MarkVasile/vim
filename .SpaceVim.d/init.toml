@@ -8,24 +8,26 @@
 
 # All SpaceVim option below [option] section
 [options]
+    relativenumber = false
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-    colorscheme = "gruvbox"
-    background = "dark"
+    colorscheme = "neodark"
+    colorscheme_bg = "dark"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
     enable_guicolors = true
+    colorscheme = "onedark"
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     statusline_separator = "arrow"
     statusline_inactive_separator = "arrow"
     buffer_index_type = 4
     enable_tabline_filetype_icon = true
-    enable_statusline_display_mode = false
-    enable_neomake = false
+    enable_statusline_mode = false
 
-    disabled_plugins = ["ctrlp", "unite", "unite-gtags", "unite-radio", "nerdtree", "htmlcomplete", "vim-youdao-translater", "neco-look", "nvim-typescript"]
+    relativenumber = false
+    enable_cursorline = false
 
     bootstrap_after  = "myspacevim#before"
 
@@ -41,7 +43,7 @@ default_position = 'top'
 default_height = 30
 
 [[layers]]
-name = "fzf"
+name = "colorscheme"
 
 [[layers]]
 name = "japanese"
@@ -53,30 +55,18 @@ name = "lang#typescript"
 name = "lang#vue"
 
 [[layers]]
-  name = "lsp"
-  filetypes = [
-    "vue",
-    "javascript",
-    "typescript"
-  ]
-
-[[layers]]
 name = "git"
 
 [[layers]]
 name = "github"
 
 [[custom_plugins]]
-name = "junegunn/fzf.vim"
-
-[[custom_plugins]]
-name = "/usr/local/opt/fzf"
-
-[[custom_plugins]]
 name = "KeitaNakamura/neodark.vim"
+
+[[custom_plugins]]
+  name = "mhartington/oceanic-next"
+  merged = 0
 
 [[custom_plugins]]
 name = "digitaltoad/vim-pug"
 
-[[custom_plugins]]
-name = "tpope/vim-fugitive"
