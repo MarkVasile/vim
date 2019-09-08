@@ -5,8 +5,14 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(load ram dir vcs command_execution_time newli
 
 alias vim=nvim
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd/zsh-interactive-cd.plugin.zsh
+autoload znt-history-widget
+zle -N znt-history-widget
+bindkey "^R" znt-history-widget
+
+export LDFLAGS="-L/usr/local/opt/readline/lib"
+export CPPFLAGS="-I/usr/local/opt/readline/include"
+export LDFLAGS="-L/usr/local/opt/sqlite/lib"
+export CPPFLAGS="-I/usr/local/opt/sqlite/include"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -19,3 +25,6 @@ export PATH="$PATH:$HOME/.rvm/bin"
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#
+# Haskell
+. $HOME/.nix-profile/etc/profile.d/nix.sh

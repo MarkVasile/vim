@@ -8,16 +8,14 @@
 
 # All SpaceVim option below [option] section
 [options]
-    relativenumber = false
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-    colorscheme = "neodark"
+    colorscheme = "OceanNext"
     colorscheme_bg = "dark"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
     enable_guicolors = true
-    colorscheme = "onedark"
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     statusline_separator = "arrow"
@@ -25,27 +23,35 @@
     buffer_index_type = 4
     enable_tabline_filetype_icon = true
     enable_statusline_mode = false
-
     relativenumber = false
     enable_cursorline = false
 
     bootstrap_after  = "myspacevim#before"
 
-    disabled_plugins = ["ctrlp", "unite", "unite-gtags", "unite-radio", "nerdtree", "htmlcomplete", "vim-youdao-translater", "neco-look"]
+    disabled_plugins = ["ctrlp", "nerdtree", "htmlcomplete", "vim-youdao-translater", "neco-look", "neosnippet", "vim-snippets"]
 
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
 auto-completion-return-key-behavior = "complete"
 auto-completion-tab-key-behavior = "smart"
-
-[[layers]]
-name = 'fuzzyfind'
+auto-completion-enable-snippets-in-popup = "0"
 
 [[layers]]
 name = 'shell'
 default_position = 'top'
 default_height = 30
+
+[[layers]]
+name = 'lsp'
+filetypes = [
+  "vue",
+  "javascript",
+  "typescript"
+]
+
+[[layers]]
+name = 'fuzzyfind'
 
 [[layers]]
 name = "colorscheme"
@@ -72,8 +78,7 @@ name = "github"
 name = "KeitaNakamura/neodark.vim"
 
 [[custom_plugins]]
-  name = "mhartington/oceanic-next"
-  merged = 0
+name = "mhartington/oceanic-next"
 
 [[custom_plugins]]
 name = "digitaltoad/vim-pug"
