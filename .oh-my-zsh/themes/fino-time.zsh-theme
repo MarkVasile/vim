@@ -1,5 +1,4 @@
 # fino-time.zsh-theme
-# Added node version prompt (@markvasile 2017-07-31)
 
 # Use with a dark background and 256-color terminal!
 # Meant for people with RVM and git. Tested only on OS X 10.7.
@@ -21,21 +20,21 @@ function prompt_char {
     echo '○'
 }
 
-local node_ver='‹$(node --version)›%{$reset_color%}'
-local cordova_ver='‹$(cordova --version)›%{$reset_color%}'
-local ionic_ver='‹$(ionic --version)›%{$reset_color%}'
-local rvm_ruby='‹$(rvm-prompt i v g)›%{$reset_color%}'
-local current_dir='${PWD/#$HOME/~}'
+function box_name {
+    [ -f ~/.box-name ] && cat ~/.box-name || echo ${SHORT_HOST:-$HOST}
+}
+
+
+local rvm_ruby='using%{$FG[243]%}$(ruby_prompt_info)'
 local git_info='$(git_prompt_info)'
-local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 
 
-PROMPT="╭─%{$FG[040]%}%n%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[226]%}${current_dir}%{$reset_color%}${git_info} - %*
+PROMPT="╭─%{$FG[040]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[033]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[226]%}%~%{$reset_color%}${git_info} %{$FG[239]%}${rvm_ruby} %D - %*
 ╰─$(virtualenv_info)$(prompt_char) "
 
-RPS1="${return_code} %{$FG[040]%}${node_ver}"
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%} ‹"
-ZSH_THEME_GIT_PROMPT_SUFFIX="› %{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[202]%} ✘✘✘"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[040]%} ✔"
+ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[202]%}✘✘✘"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[040]%}✔"
+ZSH_THEME_RUBY_PROMPT_PREFIX="‹"
+ZSH_THEME_RUBY_PROMPT_SUFFIX="›%{$reset_color%}"

@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
 let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/Users/markvasile/BostonScientific/Synergy.ionic/cordova/plugins/cordova-plugin-camera'
-let g:netrw_dirhist_2='/Users/markvasile/BostonScientific/Synergy.original/cordova'
-let g:netrw_dirhist_3='/Users/markvasile/BostonScientific/Synergy.original/cordova/www'
+let g:netrw_dirhist_1='/Users/markvasile/.SpaceVim.d'
+let g:netrw_dirhist_2='/Users/markvasile/.SpaceVim.d/autoload'
+let g:netrw_dirhist_3='/Users/markvasile/.SpaceVim.d'

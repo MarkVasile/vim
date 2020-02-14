@@ -1,3 +1,4 @@
+" let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_delay = 150
 let g:neomake_vim_enabled_makers = []
 
@@ -7,15 +8,16 @@ set shiftwidth=2
 set history=1000
 set listchars+=eol:$
 
-:autocmd BufNewFile,BufRead * :set listchars+=eol:$
+" :autocmd BufNewFile,BufRead * :set listchars+=eol:$
 
-" let g:vue_disable_pre_processors = 1
+let g:vimfiler_ignore_pattern = ['^\.git$', '^\.DS_Store$']
+let g:vue_disable_pre_processors = 1
 let g:clang2_placeholder_next = ''
 let g:clang2_placeholder_prev = ''
-let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_javascript_enabled_makers = ['eslint']
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
-let g:ale_linters = { 'javascript': ['eslint'] }
+" let g:ale_linters = { 'javascript': ['eslint'] }
 
 set hidden
 let g:LanguageClient_serverCommands = {
@@ -23,7 +25,6 @@ let g:LanguageClient_serverCommands = {
     \ 'html': [],
     \ 'css': [],
     \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'typescript': ['javascript-typescript-stdio'],
     \ }
 
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
@@ -42,3 +43,5 @@ func! s:transparent_background()
 endf
 autocmd ColorScheme * call s:transparent_background()
 call s:transparent_background()
+
+call vimfiler#custom#profile('default', 'context', { 'explorer': 1, 'winwidth' : 60 })
