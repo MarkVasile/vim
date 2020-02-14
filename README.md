@@ -1,11 +1,20 @@
 # My vim and other local env dot files
 
-Install https://github.com/spf13/spf13-vim
+## Requirements
 
 Install https://github.com/robbyrussell/oh-my-zsh
 
-Edit ~/.zshrc and add at the end: 
+Install "SauceCodePro Nerd Font Mono:h11" and add it to your iTerm2 Profile -> Text
 
-  source ~/.zshrc.local
-  
-  test 4
+    brew install neovim
+
+    npm i -g neovim
+    npm i -g typescript-language-server
+    npm i -g vue-language-server
+    npm i -g javascript-typescript-langserver
+
+    pip3 install neovim
+    pip3 install --user --upgrade pynvim
+    pip install --user python-language-server
+
+    sudo gem install neovim

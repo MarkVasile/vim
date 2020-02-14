@@ -8,7 +8,6 @@
 
 # All SpaceVim option below [option] section
 [options]
-    relativenumber = false
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
@@ -17,7 +16,6 @@
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
     enable_guicolors = true
-    colorscheme = "onedark"
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     statusline_separator = "arrow"
@@ -25,14 +23,13 @@
     buffer_index_type = 4
     enable_tabline_filetype_icon = true
     enable_statusline_mode = false
-
     relativenumber = false
     enable_cursorline = false
     autocomplete_method = "coc"
 
     bootstrap_after  = "myspacevim#after"
 
-    disabled_plugins = ["ctrlp", "nerdtree", "htmlcomplete", "vim-youdao-translater", "neco-look"]
+    disabled_plugins = ["ctrlp", "nerdtree", "htmlcomplete", "vim-youdao-translater", "neco-look", "neosnippet", "vim-snippets"]
 
 # Enable autocomplete layer
 [[layers]]
@@ -55,6 +52,17 @@ name = 'fuzzyfind'
 name = 'shell'
 default_position = 'top'
 default_height = 30
+
+[[layers]]
+name = 'lsp'
+filetypes = [
+  "vue",
+  "javascript",
+  "typescript"
+]
+
+[[layers]]
+name = 'fuzzyfind'
 
 [[layers]]
 name = "colorscheme"
