@@ -1,0 +1,147 @@
+" Comment the following line if you don't want Vim and NeoVim to share the
+" same plugin download directory.
+let g:spacevim_plug_home = '~/.vim/plugged'
+
+" Uncomment the following line to override the leader key. The default value is space key "<\Space>".
+" let g:spacevim_leader = "<\Space>"
+
+" Uncomment the following line to override the local leader key. The default value is comma ','.
+" let g:spacevim_localleader = ','
+
+" Enable the existing layers in space-vim.
+" Refer to https://github.com/liuchengxu/space-vim/blob/master/layers/LAYERS.md for all available layers.
+let g:spacevim_layers = [
+      \ 'fzf', 'better-defaults', 'which-key', 'git', 'javascript', 'html', 'markdown', 'vue', 'text-align', 'lsp'
+      \ ]
+
+" Uncomment the following line if your terminal(-emulator) supports true colors.
+let g:spacevim_enable_true_color = 1
+
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set history=1000
+set listchars+=eol:$
+
+" Uncomment the following if you have some nerd font installed.
+let g:spacevim_nerd_fonts = 1
+
+" Manage your own plugins.
+" Refer to https://github.com/junegunn/vim-plug for more detials.
+function! UserInit()
+
+  " Add your own plugin via Plug command.
+  Plug 'airblade/vim-gitgutter'
+  Plug 'airblade/vim-rooter'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'junegunn/seoul256.vim'
+  Plug 'francoiscabrol/ranger.vim'
+  Plug 'jiangmiao/auto-pairs'
+  " Plug 'leafgarland/typescript-vim'
+  Plug 'leafOfTree/vim-svelte-plugin'
+  Plug 'mileszs/ack.vim'
+  Plug 'neoclide/coc.nvim'
+  Plug 'NLKNguyen/papercolor-theme'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-fugitive'
+
+  Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh && npm install -g flow-bin',
+    \ }
+
+endfunction
+
+" Override the default settings from space-vim as well as adding extras
+function! UserConfig()
+
+  " Override the default settings.
+  " Uncomment the following line to disable relative number.
+  set norelativenumber
+  colo PaperColor
+  set background=light
+
+  " Adding extras.
+  " Uncomment the following line If you have installed the powerline fonts.
+  " It is good for airline layer.
+  " let g:airline_powerline_fonts = 1
+
+endfunction
+
+" Auto Complete setup
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Ranger setup
+let g:ranger_map_keys = 0
+nmap <space>fe :Ranger<CR>
+
+" Enable folding with the z key
+nmap z za
+
+" CoC extensions
+let g:coc_global_extensions = ['coc-json', 'coc-css', 'coc-explorer', 'coc-fzf-preview']
+
+" Add CoC ESLint and TSServer if eslint is installed locally
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+  let g:coc_global_extensions += ['coc-tsserver']
+endif
+
+" Add CoC Vetur if Vue project
+if isdirectory('./node_modules') && isdirectory('./node_modules/@vue')
+  let g:coc_global_extensions += ['coc-vetur']
+endif
+
+" Add CoC Svelte if Svelte project
+if isdirectory('./node_modules') && isdirectory('./node_modules/svelte')
+  let g:coc_global_extensions += ['coc-svelte']
+endif
+
+" Add CoC Flow if .flowconfig is present
+if filereadable('./.flowconfig')
+  let g:coc_global_extensions += ['coc-flow']
+  let g:javascript_plugin_flow = 1
+endif
+
+" ======= coc settings
+set updatetime=300
+set shortmess+=c
+
+" Use leader T to show documentation in preview window
+nnoremap <leader>t :call <SID>show_documentation()<CR>
+
+let g:LanguageClient_rootMarkers = {
+\   'javascript': ['.flowconfig', 'package.json']
+\ }
+let g:LanguageClient_serverCommands = {
+\   'javascript': ['flow', 'lsp'],
+\   'javascript.jsx': ['flow', 'lsp'],
+\   'vue': ['vls']
+\}
+
+" check the type under cursor w/ leader T
+" nnoremap <leader>t :call LanguageClient_textDocument_hover()<CR>
+nnoremap <leader>y :call LanguageClient_textDocument_definition()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('&lt;cword&gt;')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+function! ShowFzfPreview()
+  execute 'CocCommand fzf-preview.GitFiles'
+endfunction
+
+nnoremap <localleader>s :call ShowFzfPreview()<CR>
