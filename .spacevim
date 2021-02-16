@@ -17,12 +17,6 @@ let g:spacevim_layers = [
 " Uncomment the following line if your terminal(-emulator) supports true colors.
 let g:spacevim_enable_true_color = 1
 
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set history=1000
-set listchars+=eol:$
-
 " Uncomment the following if you have some nerd font installed.
 let g:spacevim_nerd_fonts = 1
 
@@ -59,7 +53,16 @@ function! UserConfig()
   " Uncomment the following line to disable relative number.
   set norelativenumber
   colo PaperColor
-  set background=light
+  set background=dark
+
+  set tabstop=2
+  set softtabstop=2
+  set shiftwidth=2
+  set history=1000
+  set listchars+=eol:$
+
+  " fix error from signify diff
+  let g:signify_sign_delete_first_line = '-'
 
   " Adding extras.
   " Uncomment the following line If you have installed the powerline fonts.
