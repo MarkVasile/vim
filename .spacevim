@@ -50,6 +50,7 @@ function! UserInit()
   Plug 'liuchengxu/vim-clap'
   Plug 'mileszs/ack.vim'
   Plug 'neoclide/coc.nvim'
+  Plug 'neoclide/coc-jest'
   Plug 'NLKNguyen/papercolor-theme'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-fugitive'
@@ -171,6 +172,9 @@ let g:vim_markdown_folding_disabled = 1
 " try CoC fixes
 let g:coc_node_path='/Users/markvasile/.nvm/versions/node/v14.17.0/bin/node'
 
+" use rg instead of vimgrep
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+
 " check the type under cursor w/ leader T
 " nnoremap <leader>t :call LanguageClient_textDocument_hover()<CR>
 nnoremap <leader>y :call LanguageClient_textDocument_definition()<CR>
@@ -188,6 +192,6 @@ function! ShowFzfPreview()
 endfunction
 
 nnoremap <localleader>s :call ShowFzfPreview()<CR>
-nnoremap <localleader>g :Clap grep2<CR>
+nnoremap <localleader>g :Clap grep<CR>
 nnoremap <localleader>f :Clap files<CR>
 nnoremap <localleader>e :Clap filer<CR>
