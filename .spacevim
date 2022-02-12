@@ -1,6 +1,7 @@
 " Comment the following line if you don't want Vim and NeoVim to share the
 " same plugin download directory.
 let g:spacevim_plug_home = '~/.vim/plugged'
+let g:space_vim_dark_background = 0
 
 set rtp+=/Users/markvasile/.fzf/bin/fzf
 
@@ -13,7 +14,18 @@ set rtp+=/Users/markvasile/.fzf/bin/fzf
 " Enable the existing layers in space-vim.
 " Refer to https://github.com/liuchengxu/space-vim/blob/master/layers/LAYERS.md for all available layers.
 let g:spacevim_layers = [
-      \ 'fzf', 'which-key', 'javascript', 'html', 'markdown', 'vue', 'text-align', 'lsp'
+      \ 'fzf',
+      \ 'which-key',
+      \ 'typescript',
+      \ 'html',
+      \ 'markdown',
+      \ 'vue',
+      \ 'text-align',
+      \ 'airline',
+      \ 'git',
+      \ 'text-align',
+      \ 'which-key',
+      \ 'spacevim',
       \ ]
 
 " Uncomment the following line if your terminal(-emulator) supports true colors.
@@ -46,23 +58,20 @@ function! UserInit()
   Plug 'jiangmiao/auto-pairs'
   Plug 'leafgarland/typescript-vim'
   Plug 'Quramy/tsuquyomi'
-  Plug 'leafOfTree/vim-svelte-plugin'
+  " Plug 'leafOfTree/vim-svelte-plugin'
+  Plug 'evanleck/vim-svelte'
   Plug 'liuchengxu/vim-clap'
   Plug 'mileszs/ack.vim'
   Plug 'neoclide/coc.nvim'
-  Plug 'neoclide/coc-jest'
   Plug 'NLKNguyen/papercolor-theme'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-fugitive'
   Plug 'vim-airline/vim-airline'
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'Galooshi/vim-import-js'
-
-  Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh && npm install -g flow-bin',
-    \ }
-
+  Plug 'tikhomirov/vim-glsl'
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'mattn/vim-lsp-settings'
 endfunction
 
 " Override the default settings from space-vim as well as adding extras
@@ -71,11 +80,7 @@ function! UserConfig()
   " Override the default settings.
   " Uncomment the following line to disable relative number.
   set norelativenumber
-  colo space_vim_theme
-  "colo seoul256-light
-  set background=dark
-  hi Normal guibg=black guifg=white
-  "hi Normal guibg=white guifg=black
+  colo space-vim-dark
 
   set tabstop=2
   set softtabstop=2
@@ -134,7 +139,7 @@ endif
 
 " Add CoC Vetur if Vue project
 if isdirectory('./node_modules') && isdirectory('./node_modules/@vue')
-  let g:coc_global_extensions += ['coc-vetur']
+  let g:coc_global_extensions += ['@yaegassy/coc-volar']
 endif
 
 " Add CoC Svelte if Svelte project
@@ -157,27 +162,11 @@ set shortmess+=c
 " Use leader T to show documentation in preview window
 nnoremap <leader>t :call <SID>show_documentation()<CR>
 
-let g:LanguageClient_rootMarkers = {
-\   'javascript': ['.flowconfig', 'package.json']
-\ }
-let g:LanguageClient_serverCommands = {
-\   'javascript': ['flow', 'lsp'],
-\   'javascript.jsx': ['flow', 'lsp'],
-\   'vue': ['vls']
-\}
-
 " disable folding for Markdown, as it slows down rendering to a crawl
 let g:vim_markdown_folding_disabled = 1
 
 " try CoC fixes
-let g:coc_node_path='/Users/markvasile/.nvm/versions/node/v14.17.0/bin/node'
-
-" use rg instead of vimgrep
-set grepprg=rg\ --vimgrep\ --smart-case\ --follow
-
-" check the type under cursor w/ leader T
-" nnoremap <leader>t :call LanguageClient_textDocument_hover()<CR>
-nnoremap <leader>y :call LanguageClient_textDocument_definition()<CR>
+let g:coc_node_path='/Users/markvasile/.nvm/versions/node/v16.13.1/bin/node'
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -192,6 +181,18 @@ function! ShowFzfPreview()
 endfunction
 
 nnoremap <localleader>s :call ShowFzfPreview()<CR>
-nnoremap <localleader>g :Clap grep<CR>
+nnoremap <localleader>g :Clap grep2<CR>
 nnoremap <localleader>f :Clap files<CR>
 nnoremap <localleader>e :Clap filer<CR>
+
+let t:is_transparent = 1
+function! Toggle_transparent_background()
+  if t:is_transparent == 0
+    hi Normal guibg=#111111 ctermbg=black
+    let t:is_transparent = 1
+  else
+    hi Normal guibg=NONE ctermbg=NONE
+    let t:is_transparent = 0
+  endif
+endfunction
+nnoremap <C-x><C-t> :call Toggle_transparent_background()<CR>
