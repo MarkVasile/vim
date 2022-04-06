@@ -1,9 +1,6 @@
 " Comment the following line if you don't want Vim and NeoVim to share the
 " same plugin download directory.
 let g:spacevim_plug_home = '~/.vim/plugged'
-let g:space_vim_dark_background = 0
-
-set rtp+=/Users/markvasile/.fzf/bin/fzf
 
 " Uncomment the following line to override the leader key. The default value is space key "<\Space>".
 " let g:spacevim_leader = "<\Space>"
@@ -15,17 +12,15 @@ set rtp+=/Users/markvasile/.fzf/bin/fzf
 " Refer to https://github.com/liuchengxu/space-vim/blob/master/layers/LAYERS.md for all available layers.
 let g:spacevim_layers = [
       \ 'fzf',
+      \ 'better-defaults',
       \ 'which-key',
       \ 'typescript',
       \ 'html',
-      \ 'markdown',
       \ 'vue',
+      \ 'markdown',
       \ 'text-align',
       \ 'airline',
-      \ 'git',
-      \ 'text-align',
-      \ 'which-key',
-      \ 'spacevim',
+      \ 'git'
       \ ]
 
 " Uncomment the following line if your terminal(-emulator) supports true colors.
@@ -34,99 +29,43 @@ let g:spacevim_enable_true_color = 1
 " Uncomment the following if you have some nerd font installed.
 let g:spacevim_nerd_fonts = 1
 
-" Disable folding in markdown (slow performance even on fast machines)
-let g:markdown_folding = 0
-
-" Enable smarter tabline in airline
 let g:airline#extensions#tabline#enabled = 1
 
 " Display buffer number in the bufferline
 let g:lightline#bufferline#show_number = 1
-
 let g:lightline#bufferline#enable_nerdfont = 1
 let g:lightline#bufferline#unicode_symbols = 1
-
-" Refer to https://github.com/junegunn/vim-plug for more detials.
-function! UserInit()
-
-  " Add your own plugin via Plug command.
-  Plug 'airblade/vim-gitgutter'
-  Plug 'airblade/vim-rooter'
-  Plug 'editorconfig/editorconfig-vim'
-  Plug 'junegunn/seoul256.vim'
-  Plug 'francoiscabrol/ranger.vim'
-  Plug 'jiangmiao/auto-pairs'
-  Plug 'leafgarland/typescript-vim'
-  Plug 'Quramy/tsuquyomi'
-  " Plug 'leafOfTree/vim-svelte-plugin'
-  Plug 'evanleck/vim-svelte'
-  Plug 'liuchengxu/vim-clap'
-  Plug 'mileszs/ack.vim'
-  Plug 'neoclide/coc.nvim'
-  Plug 'NLKNguyen/papercolor-theme'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-fugitive'
-  Plug 'vim-airline/vim-airline'
-  Plug 'mengelbrecht/lightline-bufferline'
-  Plug 'Galooshi/vim-import-js'
-  Plug 'tikhomirov/vim-glsl'
-  Plug 'prabirshrestha/vim-lsp'
-  Plug 'mattn/vim-lsp-settings'
-endfunction
-
-" Override the default settings from space-vim as well as adding extras
-function! UserConfig()
-
-  " Override the default settings.
-  " Uncomment the following line to disable relative number.
-  set norelativenumber
-  colo space-vim-dark
-
-  set tabstop=2
-  set softtabstop=2
-  set shiftwidth=2
-  set history=1000
-  set listchars+=eol:$
-
-  " fix error from signify diff
-  let g:signify_sign_delete_first_line = '-'
-
-  " Adding extras.
-  " Uncomment the following line If you have installed the powerline fonts.
-  " It is good for airline layer.
-  let g:airline_powerline_fonts = 1
-
-  nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-  nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-  nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-  nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-  nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-  nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-  nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-  nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-  nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-  nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-
-endfunction
-
-" Auto Complete setup
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
 
 " Ranger setup
 let g:ranger_map_keys = 0
 nmap <space>fe :Ranger<CR>
 
-" Enable folding with the z key
-nmap z za
+" If you want to have more control over the layer, try using Layer command.
+" if g:spacevim.gui
+"   Layer 'airline'
+" endif
+
+" Manage your own plugins.
+" Refer to https://github.com/junegunn/vim-plug for more detials.
+function! UserInit()
+
+  " Add your own plugin via Plug command.
+  Plug 'junegunn/seoul256.vim'
+  Plug 'NLKNguyen/papercolor-theme'
+
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'francoiscabrol/ranger.vim'
+  Plug 'liuchengxu/vim-clap'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-airline/vim-airline'
+  Plug 'mengelbrecht/lightline-bufferline'
+  Plug 'tikhomirov/vim-glsl'
+  Plug 'neoclide/coc.nvim'
+  Plug 'jiangmiao/auto-pairs'
+
+  Plug 'evanleck/vim-svelte'
+endfunction
 
 " CoC extensions
 let g:coc_global_extensions = ['coc-json', 'coc-css', 'coc-explorer', 'coc-fzf-preview']
@@ -147,43 +86,42 @@ if isdirectory('./node_modules') && isdirectory('./node_modules/svelte')
   let g:coc_global_extensions += ['coc-svelte']
 endif
 
-" Add CoC Flow if .flowconfig is present
-if filereadable('./.flowconfig')
-  let g:coc_global_extensions += ['coc-flow']
-  let g:javascript_plugin_flow = 1
-  " call CocAction('deactivateExtension', 'coc-tsserver')
-  " set tsserver.enable = false ??
-endif
-
-" ======= coc settings
-set updatetime=300
-set shortmess+=c
-
-" Use leader T to show documentation in preview window
-nnoremap <leader>t :call <SID>show_documentation()<CR>
-
-" disable folding for Markdown, as it slows down rendering to a crawl
-let g:vim_markdown_folding_disabled = 1
-
-" try CoC fixes
-let g:coc_node_path='/Users/markvasile/.nvm/versions/node/v16.13.1/bin/node'
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('&lt;cword&gt;')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
 function! ShowFzfPreview()
   execute 'CocCommand fzf-preview.GitFiles'
 endfunction
 
-nnoremap <localleader>s :call ShowFzfPreview()<CR>
-nnoremap <localleader>g :Clap grep2<CR>
-nnoremap <localleader>f :Clap files<CR>
-nnoremap <localleader>e :Clap filer<CR>
+" Override the default settings from space-vim as well as adding extras
+function! UserConfig()
+
+  " Override the default settings.
+  " Uncomment the following line to disable relative number.
+  set norelativenumber
+  set tabstop=2
+  set softtabstop=2
+  set shiftwidth=2
+  set history=1000
+
+  " Adding extras.
+  " Uncomment the following line If you have installed the powerline fonts.
+  " It is good for airline layer.
+  " let g:airline_powerline_fonts = 1
+
+  nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+  nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+  nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+  nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+  nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+  nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+  nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+  nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+  nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+  nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+
+  nnoremap <localleader>s :call ShowFzfPreview()<CR>
+  nnoremap <localleader>g :Clap grep2<CR>
+  nnoremap <localleader>f :Clap files<CR>
+  nnoremap <localleader>e :Clap filer<CR>
+endfunction
 
 let t:is_transparent = 1
 function! Toggle_transparent_background()
